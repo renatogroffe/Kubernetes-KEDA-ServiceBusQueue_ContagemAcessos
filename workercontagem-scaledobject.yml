@@ -1,0 +1,18 @@
+# Documentação: https://keda.sh/docs/2.8/scalers/azure-service-bus/
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: workercontagem-scaledobject
+spec:
+  scaleTargetRef:
+    name: workercontagem
+  pollingInterval: 5
+  minReplicaCount: 1
+  maxReplicaCount: 10
+  triggers:
+  - type: azure-servicebus
+    metadata:
+      # A Policy de acesso ao Azure Service Bus deve possuir a permissão de Manage
+      connectionFromEnv: ConnectionStrings__AzureServiceBus
+      queueName: queue-testes
+      messageCount: "10"
